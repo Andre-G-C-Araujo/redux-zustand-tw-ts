@@ -1,8 +1,13 @@
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { MessageCircle, Move3D } from "lucide-react";
 import { Header } from "../components/Header";
 import { Video } from "../components/Video";
 import { Module } from "../components/Module";
+import { useAppSelector } from "../store";
 export const Player = () => {
+  const modules = useAppSelector((state) => {
+    return state.player.course.modules;
+  });
+
   return (
     <div className="h-screen bg-zinc-950 text-zinc-50 flex justify-center items-center">
       <div className="flex w-[1100px] flex-col gap-6">
@@ -19,21 +24,16 @@ export const Player = () => {
             <Video />
           </div>
           <aside className="w-80 absolute top-0 bottom-0 right-0 border-l border-zinc-800 divide-y-2 divide-zinc-900 bg-zinc-900 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
-            <Module
-              moduleIndex={0}
-              title="Brincando com o redux"
-              amountOfLessons={5}
-            />
-            <Module
-              moduleIndex={1}
-              title="Descobrindo tailwind"
-              amountOfLessons={10}
-            />
-            <Module
-              moduleIndex={2}
-              title="Descobrindo tailwind"
-              amountOfLessons={10}
-            />
+            {modules.map((module, index) => {
+              return (
+                <Module
+                  key={module.id}
+                  moduleIndex={index}
+                  title={module.title}
+                  amountOfLessons={module.lessons.length}
+                />
+              );
+            })}
           </aside>
         </main>
       </div>
